@@ -1,4 +1,4 @@
-const CONTENT = {
+﻿const CONTENT = {
   ui: {
     pageTitle: "Наші валентинки",
     backButton: "Назад",
@@ -37,7 +37,7 @@ const CONTENT = {
     {
       id: "g2",
       type: "image",
-      caption: "Теплий спогад із нашого побачення.",
+      caption: "Теплий спогад із нашого побачення",
       url: "img/2.png", 
       alt: "Плейсхолдер для спогаду про побачення",
     },
@@ -51,7 +51,7 @@ const CONTENT = {
     {
       id: "g4",
       type: "image",
-      caption: "Наша маленька пригода, яку ми не забули.",
+      caption: "Наша маленька пригода, яку ми не забули",
       url: "./img/4.png",
       alt: "Плейсхолдер для спогаду про пригоду",
     },
@@ -61,14 +61,14 @@ const CONTENT = {
       id: "m1",
       title: "Перша смс",
       date: "15 серпня 2025",
-      description: "Мить, коли все раптом стало дуже теплим і рідним.",
+      description: "Мить, коли все раптом стало дуже теплим і рідним",
       icon: "\uD83C\uDF38",
     },
     {
       id: "m2",
       title: "Перше побачення",
       date: "23 вересня 2025",
-      description: "Трохи хвилювання, багато усмішок і вечір, що промайнув занадто швидко.",
+      description: "Трохи хвилювання, багато усмішок і вечір, що промайнув занадто швидко",
       imagePlaceholder: "", // TODO: Add image URL/path for this moment
       icon: "\uD83C\uDF70",
     },
@@ -76,7 +76,7 @@ const CONTENT = {
       id: "m3",
       title: "Перший поцілунок",
       date: "6 жовтня 2025",
-      description: "Мить, у якій час ніби зупинився лише для нас двох.",
+      description: "Мить, у якій час ніби зупинився лише для нас двох",
       imagePlaceholder: "", // TODO: Add image URL/path for this moment
       icon: "\uD83D\uDC8B",
     },
@@ -484,33 +484,41 @@ function createMediaElement(item, context) {
 
     const img = document.createElement("img");
     img.className = `media-img media-img-${context} is-loading`;
-    img.src = encodeURI(item.url);
+
+    const onLoad = () => {
+      img.classList.remove("is-loading");
+      img.classList.add("is-ready");
+    };
+    const onError = () => {
+      if (frame.isConnected) {
+        frame.replaceWith(createImagePlaceholder(context));
+      }
+    };
+
+    img.addEventListener("load", onLoad, { once: true });
+    img.addEventListener("error", onError, { once: true });
+
     if (item.srcset) img.srcset = item.srcset;
     img.sizes =
       item.sizes ||
-      (context === "gallery" ? "(max-width: 768px) 92vw, (max-width: 1280px) 84vw, 1200px" : "(max-width: 768px) 92vw, 620px");
-    img.alt = item.alt || item.caption || "Фото спогаду";
+      (context === "gallery"
+        ? "(max-width: 640px) 94vw, (max-width: 1024px) 96vw, 1500px"
+        : "(max-width: 640px) 92vw, 780px");
+    img.alt = item.alt || item.caption || "Memory photo";
     img.loading = context === "gallery" ? "eager" : "lazy";
     img.decoding = "async";
     img.fetchPriority = context === "gallery" ? "high" : "auto";
     img.draggable = false;
+    img.src = encodeURI(item.url);
 
-    img.addEventListener(
-      "load",
-      () => {
-        img.classList.remove("is-loading");
-        img.classList.add("is-ready");
-      },
-      { once: true }
-    );
-
-    img.addEventListener(
-      "error",
-      () => {
-        frame.replaceWith(createImagePlaceholder(context));
-      },
-      { once: true }
-    );
+    // Cache-safe: reveal image even when browser returns it from cache immediately.
+    if (img.complete) {
+      if (img.naturalWidth > 0) {
+        onLoad();
+      } else {
+        onError();
+      }
+    }
 
     frame.appendChild(img);
     return frame;
