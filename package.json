@@ -1,0 +1,14 @@
+{
+  "name": "valentinios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Valentine SPA with admin panel and visit tracking",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

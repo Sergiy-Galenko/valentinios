@@ -5,7 +5,7 @@
 1. Start server:
 
 ```bash
-node server.js
+npm start
 ```
 
 2. Open site:
@@ -23,3 +23,14 @@ node server.js
 - referrer
 - screen and viewport size
 - language and timezone
+
+## Deploy on hosting
+
+- Runtime: `Node.js 18+`
+- Start command: `npm start`
+- Port: from environment variable `PORT` (server already supports this)
+- Health check (optional): `/healthz`
+
+After deploy:
+- Main page: `https://your-domain/`
+- Admin panel: `https://your-domain/new`

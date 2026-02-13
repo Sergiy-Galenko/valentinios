@@ -47,7 +47,12 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    if (pathname === "/new" || pathname === "/new/") {
+    if (pathname === "/healthz" && req.method === "GET") {
+      sendJson(res, 200, { ok: true, uptime: process.uptime() });
+      return;
+    }
+
+    if (pathname === "/new" || pathname === "/new/" || pathname === "/new/index.html") {
       serveFile(res, path.join(ROOT_DIR, "admin.html"));
       return;
     }
