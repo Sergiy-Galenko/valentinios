@@ -134,7 +134,6 @@ init();
 function init() {
   setupViewportHeightVar();
   hydrateStaticText();
-  trackVisit();
   setupLetterScrolling();
   updateLetterScrollHint();
   createFloatingHearts(10);
@@ -144,34 +143,6 @@ function init() {
   setupModals();
   setupGalleryControls();
   updateBackButtonState();
-}
-
-function trackVisit() {
-  const payload = {
-    path: `${window.location.pathname}${window.location.search}${window.location.hash}`,
-    referrer: document.referrer || "",
-    language: navigator.language || "",
-    screen: `${window.screen.width}x${window.screen.height}`,
-    viewport: `${window.innerWidth}x${window.innerHeight}`,
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
-  };
-
-  const body = JSON.stringify(payload);
-
-  if (navigator.sendBeacon) {
-    const blob = new Blob([body], { type: "application/json" });
-    navigator.sendBeacon("/api/track", blob);
-    return;
-  }
-
-  fetch("/api/track", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body,
-    keepalive: true,
-  }).catch(() => {
-    // Ignore tracking failures in static/offline mode.
-  });
 }
 
 function setupViewportHeightVar() {
@@ -509,10 +480,10 @@ function populateMomentModal(moment) {
 function createMediaElement(item, context) {
   if (item.type === "image" && item.url) {
     const frame = document.createElement("div");
-    frame.className = "media-frame";
+    frame.className = `media-frame media-frame-${context}`;
 
     const img = document.createElement("img");
-    img.className = "media-img is-loading";
+    img.className = `media-img media-img-${context} is-loading`;
     img.src = encodeURI(item.url);
     if (item.srcset) img.srcset = item.srcset;
     img.sizes =
@@ -521,6 +492,7 @@ function createMediaElement(item, context) {
     img.alt = item.alt || item.caption || "Фото спогаду";
     img.loading = context === "gallery" ? "eager" : "lazy";
     img.decoding = "async";
+    img.fetchPriority = context === "gallery" ? "high" : "auto";
     img.draggable = false;
 
     img.addEventListener(
@@ -546,7 +518,7 @@ function createMediaElement(item, context) {
 
   if (item.type === "video" && item.embedUrl) {
     const iframe = document.createElement("iframe");
-    iframe.className = "media-video";
+    iframe.className = `media-video media-video-${context}`;
     iframe.src = item.embedUrl;
     iframe.title = item.caption || "Відео спогаду";
     iframe.allow =
@@ -557,7 +529,7 @@ function createMediaElement(item, context) {
 
   if (item.type === "video") {
     const placeholder = document.createElement("div");
-    placeholder.className = "media-placeholder video";
+    placeholder.className = `media-placeholder media-placeholder-${context} video`;
     placeholder.innerHTML = `
       <div>
         <strong>Місце для відео</strong><br />
@@ -572,7 +544,7 @@ function createMediaElement(item, context) {
 
 function createImagePlaceholder(context) {
   const placeholder = document.createElement("div");
-  placeholder.className = "media-placeholder";
+  placeholder.className = `media-placeholder media-placeholder-${context}`;
   placeholder.innerHTML = `
     <div>
       <strong>${context === "moment" ? "Місце для фото моменту" : "Місце для фото"}</strong><br />

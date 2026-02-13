@@ -773,8 +773,8 @@ body.modal-open {
 
 .modal-gallery .carousel-viewport,
 .modal-gallery .gallery-item {
-  min-height: clamp(340px, 76vh, 900px);
-  height: clamp(340px, 76vh, 900px);
+  min-height: clamp(260px, 64vh, 720px);
+  height: clamp(260px, 64vh, 720px);
 }
 
 .modal-gallery .media-placeholder {
@@ -840,12 +840,12 @@ body.modal-open {
   place-items: center;
   color: #684875;
   text-align: center;
-  padding: 12px;
+  padding: clamp(8px, 1.6vw, 12px);
 }
 
 .media-frame {
-  width: 100%;
-  height: 100%;
+  width: min(100%, 100%);
+  height: min(100%, 100%);
   border-radius: 12px;
   overflow: hidden;
   display: grid;
@@ -861,6 +861,23 @@ body.modal-open {
   object-position: center;
   image-rendering: auto;
   transform: translateZ(0);
+}
+
+.media-frame-gallery {
+  max-width: min(100%, 1260px);
+  max-height: 100%;
+}
+
+.media-frame-moment {
+  width: min(100%, 720px);
+  max-height: min(52vh, 360px);
+  margin: 0 auto;
+}
+
+.media-img-gallery,
+.media-img-moment {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .media-img.is-loading {
@@ -912,7 +929,7 @@ body.modal-open {
 }
 
 .moment-media-placeholder {
-  min-height: 190px;
+  min-height: clamp(190px, 36vh, 340px);
   border-radius: 14px;
   border: 2px dashed rgba(171, 101, 139, 0.56);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(246, 213, 230, 0.84));
@@ -924,7 +941,7 @@ body.modal-open {
 }
 
 .moment-media-placeholder .media-frame {
-  min-height: 190px;
+  min-height: clamp(190px, 36vh, 340px);
 }
 
 @media (max-width: 640px) {
@@ -1076,8 +1093,8 @@ body.modal-open {
 
   .modal-gallery .carousel-viewport,
   .modal-gallery .gallery-item {
-    min-height: 280px;
-    height: calc(var(--app-vh) - 190px - var(--safe-top) - var(--safe-bottom));
+    min-height: clamp(210px, 50vh, 420px);
+    height: clamp(210px, 50vh, 420px);
   }
 }
 
