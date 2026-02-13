@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Наші валентинки</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-bg" aria-hidden="true">
+      <div id="floatingHearts" class="floating-hearts"></div>
+    </div>
+
+    <div id="burstLayer" class="burst-layer" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <button id="backButton" class="btn btn-ghost" type="button" aria-label="Назад">
+        Назад
+      </button>
+
+      <nav class="tabs" aria-label="Основна навігація" role="tablist">
+        <button
+          id="tabLetter"
+          class="tab is-active"
+          type="button"
+          data-target="letterSection"
+          aria-controls="letterSection"
+          aria-selected="true"
+          role="tab"
+        >
+          Лист
+        </button>
+        <button
+          id="tabMoments"
+          class="tab"
+          type="button"
+          data-target="momentsSection"
+          aria-controls="momentsSection"
+          aria-selected="false"
+          role="tab"
+        >
+          Наші моменти
+        </button>
+      </nav>
+    </header>
+
+    <main class="app-shell">
+      <section id="letterSection" class="view-section is-active" aria-labelledby="letterTitle">
+        <h1 id="letterTitle" class="section-title">Лист, що оживає</h1>
+
+        <div class="letter-stage">
+          <button
+            id="envelopeButton"
+            class="envelope-button"
+            type="button"
+            aria-expanded="false"
+            aria-label="Відкрити конверт із листом"
+          >
+            <span class="envelope-shell">
+              <span class="envelope-back"></span>
+              <span class="envelope-front"></span>
+              <span class="envelope-flap"></span>
+              <span class="letter-paper" aria-hidden="true">
+                <span class="paper-line"></span>
+                <span class="paper-line"></span>
+                <span class="paper-line short"></span>
+              </span>
+            </span>
+            <span id="envelopeLabel" class="envelope-label">Натисни, щоб відкрити</span>
+          </button>
+        </div>
+
+        <article id="letterCard" class="letter-card" aria-live="polite">
+          <h2 id="letterCardTitle" class="card-title">Твій лист</h2>
+          <p id="typedMessage" class="typed-message"></p>
+          <span id="typingCursor" class="typing-cursor hidden" aria-hidden="true"></span>
+          <button id="surpriseButton" class="btn btn-primary hidden" type="button">
+            Відкрити сюрприз
+          </button>
+        </article>
+      </section>
+
+      <section id="momentsSection" class="view-section" aria-labelledby="momentsTitle" aria-hidden="true">
+        <h1 id="momentsTitle" class="section-title">Мапа наших моментів</h1>
+        <p id="momentsSubtitle" class="section-subtitle">Маленький маршрут місць, де наші серця зупинялись.</p>
+
+        <div class="timeline-wrap">
+          <ul id="timelineList" class="timeline-list" aria-label="Таймлайн наших спогадів"></ul>
+        </div>
+      </section>
+    </main>
+
+    <div id="galleryModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="galleryTitle">
+      <div class="modal-backdrop" data-close-modal="galleryModal"></div>
+      <div class="modal-card">
+        <button class="modal-close" type="button" aria-label="Закрити галерею" data-close-modal="galleryModal">
+          &times;
+        </button>
+        <h2 id="galleryTitle" class="modal-title">Наша галерея сюрпризів</h2>
+
+        <div class="carousel">
+          <button id="galleryPrev" class="carousel-nav" type="button" aria-label="Попередній елемент">
+            &#10094;
+          </button>
+          <div id="galleryViewport" class="carousel-viewport" aria-live="polite"></div>
+          <button id="galleryNext" class="carousel-nav" type="button" aria-label="Наступний елемент">
+            &#10095;
+          </button>
+        </div>
+        <p id="galleryCaption" class="carousel-caption"></p>
+      </div>
+    </div>
+
+    <div id="momentModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="momentModalTitle">
+      <div class="modal-backdrop" data-close-modal="momentModal"></div>
+      <div class="modal-card">
+        <button class="modal-close" type="button" aria-label="Закрити деталі моменту" data-close-modal="momentModal">
+          &times;
+        </button>
+        <h2 id="momentModalTitle" class="modal-title"></h2>
+        <p id="momentModalDate" class="moment-date"></p>
+        <p id="momentModalDescription" class="moment-description"></p>
+        <div id="momentModalMedia" class="moment-media-placeholder"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
