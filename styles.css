@@ -810,6 +810,45 @@ body.modal-open {
   padding: 12px;
 }
 
+.media-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(245, 222, 237, 0.8));
+}
+
+.media-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  image-rendering: auto;
+  transform: translateZ(0);
+}
+
+.media-img.is-loading {
+  opacity: 0;
+  filter: blur(6px);
+}
+
+.media-img.is-ready {
+  opacity: 1;
+  filter: blur(0);
+  transition: opacity 260ms ease, filter 260ms ease;
+}
+
+.media-video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+  display: block;
+}
+
 .media-placeholder {
   width: min(92%, 520px);
   height: 82%;
@@ -849,6 +888,10 @@ body.modal-open {
   color: #694a76;
   text-align: center;
   padding: 14px;
+}
+
+.moment-media-placeholder .media-frame {
+  min-height: 190px;
 }
 
 @media (max-width: 640px) {

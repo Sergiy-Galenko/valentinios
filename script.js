@@ -44,14 +44,15 @@ const CONTENT = {
     {
       id: "g3",
       type: "image",
-      caption: "Коротке відео з нашого улюбленого дня.",
-      embedUrl: "", // TODO: Add a real video embed URL when ready
+      caption: "Наш перший поцілунок",
+      url: "img/3.png", 
+      alt: "Плейсхолдер для спогаду про поцілунок",
     },
     {
       id: "g4",
       type: "image",
       caption: "Наша маленька пригода, яку ми не забули.",
-      url: "", // TODO: Add real image path
+      url: "img/4.png", 
       alt: "Плейсхолдер для спогаду про пригоду",
     },
   ],
@@ -477,35 +478,56 @@ function populateMomentModal(moment) {
 
 function createMediaElement(item, context) {
   if (item.type === "image" && item.url) {
+    const frame = document.createElement("div");
+    frame.className = "media-frame";
+
     const img = document.createElement("img");
-    img.src = item.url;
+    img.className = "media-img is-loading";
+    img.src = encodeURI(item.url);
+    if (item.srcset) img.srcset = item.srcset;
+    img.sizes =
+      item.sizes ||
+      (context === "gallery" ? "(max-width: 768px) 92vw, (max-width: 1280px) 84vw, 1200px" : "(max-width: 768px) 92vw, 620px");
     img.alt = item.alt || item.caption || "Фото спогаду";
-    img.loading = "lazy";
-    img.style.width = "100%";
-    img.style.height = "100%";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "12px";
-    return img;
+    img.loading = context === "gallery" ? "eager" : "lazy";
+    img.decoding = "async";
+    img.draggable = false;
+
+    img.addEventListener(
+      "load",
+      () => {
+        img.classList.remove("is-loading");
+        img.classList.add("is-ready");
+      },
+      { once: true }
+    );
+
+    img.addEventListener(
+      "error",
+      () => {
+        frame.replaceWith(createImagePlaceholder(context));
+      },
+      { once: true }
+    );
+
+    frame.appendChild(img);
+    return frame;
   }
 
   if (item.type === "video" && item.embedUrl) {
     const iframe = document.createElement("iframe");
+    iframe.className = "media-video";
     iframe.src = item.embedUrl;
     iframe.title = item.caption || "Відео спогаду";
     iframe.allow =
       "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
     iframe.allowFullscreen = true;
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "0";
-    iframe.style.borderRadius = "12px";
     return iframe;
   }
 
-  const placeholder = document.createElement("div");
-  placeholder.className = `media-placeholder ${item.type === "video" ? "video" : ""}`;
-
   if (item.type === "video") {
+    const placeholder = document.createElement("div");
+    placeholder.className = "media-placeholder video";
     placeholder.innerHTML = `
       <div>
         <strong>Місце для відео</strong><br />
@@ -515,6 +537,12 @@ function createMediaElement(item, context) {
     return placeholder;
   }
 
+  return createImagePlaceholder(context);
+}
+
+function createImagePlaceholder(context) {
+  const placeholder = document.createElement("div");
+  placeholder.className = "media-placeholder";
   placeholder.innerHTML = `
     <div>
       <strong>${context === "moment" ? "Місце для фото моменту" : "Місце для фото"}</strong><br />
