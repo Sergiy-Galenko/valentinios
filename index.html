@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Наші валентинки</title>
+    <title>РќР°С€С– РІР°Р»РµРЅС‚РёРЅРєРё</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -14,11 +14,11 @@
     <div id="burstLayer" class="burst-layer" aria-hidden="true"></div>
 
     <header class="topbar">
-      <button id="backButton" class="btn btn-ghost" type="button" aria-label="Назад">
-        Назад
+      <button id="backButton" class="btn btn-ghost" type="button" aria-label="РќР°Р·Р°Рґ">
+        РќР°Р·Р°Рґ
       </button>
 
-      <nav class="tabs" aria-label="Основна навігація" role="tablist">
+      <nav class="tabs" aria-label="РћСЃРЅРѕРІРЅР° РЅР°РІС–РіР°С†С–СЏ" role="tablist">
         <button
           id="tabLetter"
           class="tab is-active"
@@ -28,7 +28,7 @@
           aria-selected="true"
           role="tab"
         >
-          Лист
+          Р›РёСЃС‚
         </button>
         <button
           id="tabMoments"
@@ -39,20 +39,21 @@
           aria-selected="false"
           role="tab"
         >
-          Наші моменти
+          РќР°С€С– РјРѕРјРµРЅС‚Рё
         </button>
       </nav>
     </header>
 
     <main class="app-shell">
       <section id="letterSection" class="view-section is-active" aria-labelledby="letterTitle">
-        <h1 id="letterTitle" class="section-title">Лист, що оживає</h1>
+        <h1 id="letterTitle" class="section-title">Р›РёСЃС‚, С‰Рѕ РѕР¶РёРІР°С”</h1>
 
         <div class="letter-stage">
-          <button
+          <div
             id="envelopeButton"
             class="envelope-button"
-            type="button"
+            role="button"
+            tabindex="0"
             aria-expanded="false"
             aria-label="Відкрити конверт із листом"
           >
@@ -61,49 +62,54 @@
               <span class="envelope-front"></span>
               <span class="envelope-flap"></span>
               <span class="letter-paper" aria-hidden="true">
-                <span class="paper-line"></span>
-                <span class="paper-line"></span>
-                <span class="paper-line short"></span>
+                <span class="paper-preview" aria-hidden="true">
+                  <span class="paper-line"></span>
+                  <span class="paper-line"></span>
+                  <span class="paper-line short"></span>
+                </span>
+                <span class="letter-sheet" aria-hidden="true">
+                  <span id="paperContent" class="paper-content" aria-live="polite">
+                    <p id="typedMessage" class="typed-message typed-message-paper"></p>
+                    <span id="typingCursor" class="typing-cursor hidden" aria-hidden="true"></span>
+                  </span>
+                  <span id="paperScrollHint" class="paper-scroll-hint hidden" aria-hidden="true">Гортай лист ↓</span>
+                </span>
               </span>
             </span>
             <span id="envelopeLabel" class="envelope-label">Натисни, щоб відкрити</span>
-          </button>
+          </div>
+          <div class="letter-bottom-actions">
+            <button id="surpriseButton" class="btn btn-primary" type="button" disabled aria-disabled="true">
+              Відкрити сюрприз
+            </button>
+          </div>
         </div>
-
-        <article id="letterCard" class="letter-card" aria-live="polite">
-          <h2 id="letterCardTitle" class="card-title">Твій лист</h2>
-          <p id="typedMessage" class="typed-message"></p>
-          <span id="typingCursor" class="typing-cursor hidden" aria-hidden="true"></span>
-          <button id="surpriseButton" class="btn btn-primary hidden" type="button">
-            Відкрити сюрприз
-          </button>
-        </article>
       </section>
 
       <section id="momentsSection" class="view-section" aria-labelledby="momentsTitle" aria-hidden="true">
-        <h1 id="momentsTitle" class="section-title">Мапа наших моментів</h1>
-        <p id="momentsSubtitle" class="section-subtitle">Маленький маршрут місць, де наші серця зупинялись.</p>
+        <h1 id="momentsTitle" class="section-title">РњР°РїР° РЅР°С€РёС… РјРѕРјРµРЅС‚С–РІ</h1>
+        <p id="momentsSubtitle" class="section-subtitle">РњР°Р»РµРЅСЊРєРёР№ РјР°СЂС€СЂСѓС‚ РјС–СЃС†СЊ, РґРµ РЅР°С€С– СЃРµСЂС†СЏ Р·СѓРїРёРЅСЏР»РёСЃСЊ.</p>
 
         <div class="timeline-wrap">
-          <ul id="timelineList" class="timeline-list" aria-label="Таймлайн наших спогадів"></ul>
+          <ul id="timelineList" class="timeline-list" aria-label="РўР°Р№РјР»Р°Р№РЅ РЅР°С€РёС… СЃРїРѕРіР°РґС–РІ"></ul>
         </div>
       </section>
     </main>
 
-    <div id="galleryModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="galleryTitle">
+    <div id="galleryModal" class="modal modal-gallery hidden" role="dialog" aria-modal="true" aria-labelledby="galleryTitle">
       <div class="modal-backdrop" data-close-modal="galleryModal"></div>
       <div class="modal-card">
-        <button class="modal-close" type="button" aria-label="Закрити галерею" data-close-modal="galleryModal">
+        <button class="modal-close" type="button" aria-label="Р—Р°РєСЂРёС‚Рё РіР°Р»РµСЂРµСЋ" data-close-modal="galleryModal">
           &times;
         </button>
-        <h2 id="galleryTitle" class="modal-title">Наша галерея сюрпризів</h2>
+        <h2 id="galleryTitle" class="modal-title">РќР°С€Р° РіР°Р»РµСЂРµСЏ СЃСЋСЂРїСЂРёР·С–РІ</h2>
 
         <div class="carousel">
-          <button id="galleryPrev" class="carousel-nav" type="button" aria-label="Попередній елемент">
+          <button id="galleryPrev" class="carousel-nav" type="button" aria-label="РџРѕРїРµСЂРµРґРЅС–Р№ РµР»РµРјРµРЅС‚">
             &#10094;
           </button>
           <div id="galleryViewport" class="carousel-viewport" aria-live="polite"></div>
-          <button id="galleryNext" class="carousel-nav" type="button" aria-label="Наступний елемент">
+          <button id="galleryNext" class="carousel-nav" type="button" aria-label="РќР°СЃС‚СѓРїРЅРёР№ РµР»РµРјРµРЅС‚">
             &#10095;
           </button>
         </div>
@@ -114,7 +120,7 @@
     <div id="momentModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="momentModalTitle">
       <div class="modal-backdrop" data-close-modal="momentModal"></div>
       <div class="modal-card">
-        <button class="modal-close" type="button" aria-label="Закрити деталі моменту" data-close-modal="momentModal">
+        <button class="modal-close" type="button" aria-label="Р—Р°РєСЂРёС‚Рё РґРµС‚Р°Р»С– РјРѕРјРµРЅС‚Сѓ" data-close-modal="momentModal">
           &times;
         </button>
         <h2 id="momentModalTitle" class="modal-title"></h2>
@@ -127,3 +133,7 @@
     <script src="script.js"></script>
   </body>
 </html>
+
+
+
+

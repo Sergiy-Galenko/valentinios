@@ -7,41 +7,43 @@ const CONTENT = {
     letterSectionTitle: "Лист, що оживає",
     envelopeTapLabel: "Натисни, щоб відкрити",
     envelopeOpenedLabel: "Лист відкрито",
-    letterCardTitle: "Твій лист",
+    letterScrollHint: "Гортай лист ↓",
     surpriseButton: "Відкрити сюрприз",
     momentsSectionTitle: "Мапа наших моментів",
     momentsSubtitle: "Маленький маршрут місць, де наші серця зупинялись.",
     galleryTitle: "Наша галерея сюрпризів",
   },
   letter: {
-    greeting: "Моя любов,",
+    greeting: "Кошеня ❤️💋",
     intro:
       "Кожен день із тобою схожий на маленький затишний світ, де все стає теплішим і світлішим.",
     reasons: [
-      "Ти робиш навіть звичайні дні чарівними.",
-      "Ти слухаєш мене всім серцем.",
-      "Ти перетворюєш маленькі миті на найулюбленіші спогади.",
+      "Моє кошиня, ти моє серденько! 🐾💖",
+      "Мої очі ловлять твою посмішку навіть крізь хмаринки 😊💌",
+      "С тобою хочеться обійматися завжди — навіть коли ти просто поряд 🤗💕",
+      "Сердечко моє стрибає кожного разу, коли бачу твої повідомлення 📱💓",
+      "Я посміхаюсь навіть тоді, коли ти просто згадуєш мене! 🥹❤️",
     ],
-    closing: "Назавжди твоя людина. З Днем святого Валентина.",
+    closing: "Назавжди твій котик❤️💋. З Днем святого Валентина.",
   },
   gallery: [
     {
       id: "g1",
       type: "image",
       caption: "Наше перше фото разом.",
-      url: "", // TODO: Add real image path, e.g. "assets/first-photo.jpg"
+      url: "img/1.png", 
       alt: "Плейсхолдер для нашого першого фото",
     },
     {
       id: "g2",
       type: "image",
       caption: "Теплий спогад із нашого побачення.",
-      url: "", // TODO: Add real image path
+      url: "img/2.png", 
       alt: "Плейсхолдер для спогаду про побачення",
     },
     {
       id: "g3",
-      type: "video",
+      type: "image",
       caption: "Коротке відео з нашого улюбленого дня.",
       embedUrl: "", // TODO: Add a real video embed URL when ready
     },
@@ -100,12 +102,13 @@ const ui = {
     momentsSection: document.getElementById("momentsSection"),
   },
   letterTitle: document.getElementById("letterTitle"),
-  letterCardTitle: document.getElementById("letterCardTitle"),
   momentsTitle: document.getElementById("momentsTitle"),
   momentsSubtitle: document.getElementById("momentsSubtitle"),
   envelopeButton: document.getElementById("envelopeButton"),
   envelopeLabel: document.getElementById("envelopeLabel"),
   envelopeShell: document.querySelector(".envelope-shell"),
+  paperContent: document.getElementById("paperContent"),
+  paperScrollHint: document.getElementById("paperScrollHint"),
   typedMessage: document.getElementById("typedMessage"),
   typingCursor: document.getElementById("typingCursor"),
   surpriseButton: document.getElementById("surpriseButton"),
@@ -139,6 +142,8 @@ init();
 function init() {
   setupViewportHeightVar();
   hydrateStaticText();
+  setupLetterScrolling();
+  updateLetterScrollHint();
   createFloatingHearts(10);
   renderTimeline();
   setupNavigation();
@@ -165,11 +170,13 @@ function hydrateStaticText() {
   ui.tabMoments.textContent = CONTENT.ui.navMoments;
   ui.letterTitle.textContent = CONTENT.ui.letterSectionTitle;
   ui.envelopeLabel.textContent = CONTENT.ui.envelopeTapLabel;
-  ui.letterCardTitle.textContent = CONTENT.ui.letterCardTitle;
+  ui.paperScrollHint.textContent = CONTENT.ui.letterScrollHint;
   ui.surpriseButton.textContent = CONTENT.ui.surpriseButton;
   ui.momentsTitle.textContent = CONTENT.ui.momentsSectionTitle;
   ui.momentsSubtitle.textContent = CONTENT.ui.momentsSubtitle;
   ui.galleryTitle.textContent = CONTENT.ui.galleryTitle;
+  ui.surpriseButton.disabled = true;
+  ui.surpriseButton.setAttribute("aria-disabled", "true");
 }
 
 function setupNavigation() {
@@ -233,20 +240,60 @@ function updateBackButtonState() {
 }
 
 function setupEnvelope() {
-  ui.envelopeButton.addEventListener("click", () => {
+  const openEnvelope = () => {
     if (state.envelopeOpened) return;
+
+    const SHEET_SHOW_DELAY = 520;
+    const ENVELOPE_CLOSE_DELAY = 980;
+    const TYPE_START_DELAY = 1080;
 
     state.envelopeOpened = true;
     ui.envelopeShell.classList.add("is-open");
     ui.envelopeButton.setAttribute("aria-expanded", "true");
     ui.envelopeLabel.textContent = CONTENT.ui.envelopeOpenedLabel;
 
-    burstFromElement(ui.envelopeShell, 16);
+    burstAroundElement(ui.envelopeShell, 4, 26, 0.9);
+
+    window.setTimeout(() => {
+      ui.envelopeShell.classList.add("is-sheet-visible");
+    }, SHEET_SHOW_DELAY);
+
+    window.setTimeout(() => {
+      ui.envelopeShell.classList.remove("is-open");
+    }, ENVELOPE_CLOSE_DELAY);
 
     window.setTimeout(() => {
       startTypewriter();
-    }, 640);
+      updateLetterScrollHint();
+    }, TYPE_START_DELAY);
+  };
+
+  ui.envelopeButton.addEventListener("click", openEnvelope);
+  ui.envelopeButton.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openEnvelope();
+    }
   });
+}
+
+function setupLetterScrolling() {
+  if (!ui.paperContent) return;
+
+  ui.paperContent.addEventListener("scroll", updateLetterScrollHint, { passive: true });
+  window.addEventListener("resize", updateLetterScrollHint, { passive: true });
+  window.addEventListener("orientationchange", updateLetterScrollHint);
+}
+
+function updateLetterScrollHint() {
+  if (!ui.paperContent || !ui.paperScrollHint) return;
+
+  const hasOverflow = ui.paperContent.scrollHeight - ui.paperContent.clientHeight > 8;
+  const atBottom = ui.paperContent.scrollTop + ui.paperContent.clientHeight >= ui.paperContent.scrollHeight - 8;
+  const isSheetVisible = Boolean(ui.envelopeShell && ui.envelopeShell.classList.contains("is-sheet-visible"));
+
+  ui.paperContent.classList.toggle("is-scrollable", hasOverflow);
+  ui.paperScrollHint.classList.toggle("hidden", !(isSheetVisible && hasOverflow && !atBottom));
 }
 
 function startTypewriter() {
@@ -260,8 +307,9 @@ function startTypewriter() {
     speed: 28,
     onDone: () => {
       ui.typingCursor.classList.add("hidden");
-      ui.surpriseButton.classList.remove("hidden");
-      ui.surpriseButton.classList.add("revealed");
+      ui.surpriseButton.disabled = false;
+      ui.surpriseButton.setAttribute("aria-disabled", "false");
+      updateLetterScrollHint();
     },
   });
 }
@@ -273,6 +321,10 @@ function typeWriter(text, targetEl, options) {
 
   const tick = () => {
     targetEl.textContent = text.slice(0, index);
+    if (ui.paperContent) {
+      ui.paperContent.scrollTop = ui.paperContent.scrollHeight;
+    }
+    updateLetterScrollHint();
     index += 1;
 
     if (index <= text.length) {
@@ -485,16 +537,29 @@ function createFloatingHearts(count) {
   }
 }
 
-function burstFromElement(element, count) {
+function burstAroundElement(element, waves = 3, count = 22, heartChance = 0.85) {
+  if (!element) return;
+  const rect = element.getBoundingClientRect();
+
+  for (let wave = 0; wave < waves; wave += 1) {
+    window.setTimeout(() => {
+      const x = rect.left + rect.width * (0.15 + Math.random() * 0.7);
+      const y = rect.top + rect.height * (0.15 + Math.random() * 0.7);
+      burstFromPoint(x, y, count, null, heartChance);
+    }, wave * 120);
+  }
+}
+
+function burstFromElement(element, count, heartChance = 0.55) {
   const rect = element.getBoundingClientRect();
   const x = rect.left + rect.width / 2;
   const y = rect.top + rect.height / 2;
-  burstFromPoint(x, y, count);
+  burstFromPoint(x, y, count, null, heartChance);
 }
 
-function burstFromPoint(x, y, count = 14, fallbackElement) {
+function burstFromPoint(x, y, count = 14, fallbackElement, heartChance = 0.55) {
   const colors = ["#ff80b8", "#f36ea5", "#ffb6d3", "#f8a2cd", "#ffd1e4", "#ff7ca0"];
-  const total = Math.max(12, Math.min(20, count));
+  const total = Math.max(12, Math.min(36, count));
   let pointX = x;
   let pointY = y;
 
@@ -511,7 +576,7 @@ function burstFromPoint(x, y, count = 14, fallbackElement) {
 
   for (let i = 0; i < total; i += 1) {
     const particle = document.createElement("span");
-    const isHeart = Math.random() > 0.45;
+    const isHeart = Math.random() < heartChance;
     particle.className = `burst-particle${isHeart ? " heart" : ""}`;
     particle.style.setProperty("--x", `${pointX}px`);
     particle.style.setProperty("--y", `${pointY}px`);
