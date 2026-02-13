@@ -59,16 +59,15 @@ const CONTENT = {
   moments: [
     {
       id: "m1",
-      title: "Перша зустріч",
-      date: "Додай дату",
+      title: "Перша смс",
+      date: "15 серпня 2025",
       description: "Мить, коли все раптом стало дуже теплим і рідним.",
-      imagePlaceholder: "", // TODO: Add image URL/path for this moment
       icon: "\uD83C\uDF38",
     },
     {
       id: "m2",
       title: "Перше побачення",
-      date: "Додай дату",
+      date: "23 вересня 2025",
       description: "Трохи хвилювання, багато усмішок і вечір, що промайнув занадто швидко.",
       imagePlaceholder: "", // TODO: Add image URL/path for this moment
       icon: "\uD83C\uDF70",
@@ -76,18 +75,10 @@ const CONTENT = {
     {
       id: "m3",
       title: "Перший поцілунок",
-      date: "Додай дату",
+      date: "6 жовтня 2025",
       description: "Мить, у якій час ніби зупинився лише для нас двох.",
       imagePlaceholder: "", // TODO: Add image URL/path for this moment
       icon: "\uD83D\uDC8B",
-    },
-    {
-      id: "m4",
-      title: "Найсмішніший момент",
-      date: "Додай дату",
-      description: "Той спогад, де ми сміялися до сліз і досі його згадуємо.",
-      imagePlaceholder: "", // TODO: Add image URL/path for this moment
-      icon: "\uD83D\uDE02",
     },
   ],
 };
