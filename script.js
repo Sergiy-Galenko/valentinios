@@ -134,6 +134,7 @@ init();
 function init() {
   setupViewportHeightVar();
   hydrateStaticText();
+  trackVisit();
   setupLetterScrolling();
   updateLetterScrollHint();
   createFloatingHearts(10);
@@ -143,6 +144,34 @@ function init() {
   setupModals();
   setupGalleryControls();
   updateBackButtonState();
+}
+
+function trackVisit() {
+  const payload = {
+    path: `${window.location.pathname}${window.location.search}${window.location.hash}`,
+    referrer: document.referrer || "",
+    language: navigator.language || "",
+    screen: `${window.screen.width}x${window.screen.height}`,
+    viewport: `${window.innerWidth}x${window.innerHeight}`,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+  };
+
+  const body = JSON.stringify(payload);
+
+  if (navigator.sendBeacon) {
+    const blob = new Blob([body], { type: "application/json" });
+    navigator.sendBeacon("/api/track", blob);
+    return;
+  }
+
+  fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+    keepalive: true,
+  }).catch(() => {
+    // Ignore tracking failures in static/offline mode.
+  });
 }
 
 function setupViewportHeightVar() {

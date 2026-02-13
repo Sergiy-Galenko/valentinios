@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Адмін панель</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-body">
+    <header class="admin-topbar">
+      <a href="/" class="btn btn-ghost admin-home-link">На сайт</a>
+      <h1 class="admin-title">Адмін панель /new</h1>
+      <div class="admin-controls">
+        <input
+          id="searchInput"
+          class="admin-search"
+          type="search"
+          placeholder="Пошук: IP, країна, браузер..."
+          aria-label="Пошук по логах"
+        />
+        <button id="refreshButton" class="btn btn-primary" type="button">Оновити</button>
+      </div>
+    </header>
+
+    <main class="admin-shell">
+      <section id="summaryCards" class="summary-grid" aria-label="Зведена статистика"></section>
+
+      <section class="admin-table-card">
+        <div class="admin-meta">
+          <p id="statusText" class="admin-status">Завантаження...</p>
+          <p id="lastUpdated" class="admin-updated"></p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table" aria-label="Логи відвідувань">
+            <thead>
+              <tr>
+                <th>Час</th>
+                <th>IP</th>
+                <th>Країна</th>
+                <th>Пристрій</th>
+                <th>Браузер / ОС</th>
+                <th>Сторінка</th>
+                <th>Реферер</th>
+              </tr>
+            </thead>
+            <tbody id="visitsBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
