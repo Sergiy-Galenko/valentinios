@@ -425,13 +425,23 @@ function renderTimeline() {
     pin.className = "timeline-pin";
     pin.setAttribute("aria-label", `Відкрити спогад: ${moment.title}`);
     pin.dataset.id = moment.id;
-    pin.textContent = moment.icon || "\u2764";
+
+    const pinIcon = document.createElement("span");
+    pinIcon.className = "timeline-pin-icon";
+    pinIcon.setAttribute("aria-hidden", "true");
+    pinIcon.textContent = moment.icon || "\u2764";
+    pin.appendChild(pinIcon);
 
     const card = document.createElement("article");
     card.className = "timeline-card";
     card.innerHTML = `
-      <h3 class="moment-title">${escapeHtml(moment.title)}</h3>
-      <p class="moment-meta">${escapeHtml(moment.date || "Дату ще не додано")}</p>
+      <div class="moment-head">
+        <span class="moment-sticker" aria-hidden="true">${escapeHtml(moment.icon || "\u2764")}</span>
+        <div class="moment-head-text">
+          <h3 class="moment-title">${escapeHtml(moment.title)}</h3>
+          <p class="moment-meta">${escapeHtml(moment.date || "Дату ще не додано")}</p>
+        </div>
+      </div>
       <p class="moment-preview">${escapeHtml(moment.description)}</p>
     `;
 

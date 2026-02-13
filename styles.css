@@ -634,17 +634,25 @@ body.modal-open {
   position: absolute;
   left: -16px;
   top: 14px;
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   border: 3px solid #fff;
   border-radius: 50%;
   background: linear-gradient(160deg, var(--pin), #ff6ea9);
   box-shadow: 0 6px 14px rgba(193, 73, 132, 0.34);
   display: grid;
   place-items: center;
-  font-size: 14px;
   cursor: pointer;
   transition: transform var(--transition), box-shadow var(--transition), outline var(--transition);
+}
+
+.timeline-pin-icon {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .timeline-pin:hover {
@@ -673,13 +681,38 @@ body.modal-open {
   box-shadow: 0 10px 20px rgba(104, 56, 98, 0.12);
 }
 
+.moment-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.moment-head-text {
+  min-width: 0;
+}
+
+.moment-sticker {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  font-size: 16px;
+  line-height: 1;
+  background: radial-gradient(circle at 30% 30%, #ffe8f3, #ffc7df 62%, #ff9ec5);
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6px 14px rgba(193, 73, 132, 0.22);
+}
+
 .moment-title {
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   font-size: 1rem;
 }
 
 .moment-meta {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: 0.9rem;
   color: var(--text-soft);
 }
@@ -978,7 +1011,28 @@ body.modal-open {
     left: -14px;
     width: 24px;
     height: 24px;
+  }
+
+  .timeline-pin-icon {
     font-size: 12px;
+  }
+
+  .moment-head {
+    gap: 8px;
+  }
+
+  .moment-sticker {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .moment-title {
+    font-size: 0.98rem;
+  }
+
+  .moment-meta {
+    font-size: 0.84rem;
   }
 
   .modal {
@@ -1068,6 +1122,12 @@ body.modal-open {
   .typed-message-paper {
     font-size: 0.8rem;
     line-height: 1.4;
+  }
+
+  .moment-sticker {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
   }
 
   .modal-close {
